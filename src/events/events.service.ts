@@ -10,9 +10,9 @@ export class EventsService {
     @InjectModel('Event') private readonly eventsModel: Model<Event>
   ) {}
 
-  async getEvents() {
+  async getEventsArtist(artistId: string) {
     try {
-      const events = await this.eventsModel.find();
+      const events = await this.eventsModel.find({artistId});
       return this.mapEvents(events);
     } catch (e) {
       return e.response;
@@ -37,9 +37,65 @@ export class EventsService {
     }
   }
 
-  async createEvent() {
+  async createEvent(eventData: EventData, artistId: string) {
     try {
-      
+      const event = await this.eventsModel.create({
+        ...eventData,
+        artistId,
+      })
+
+      return {
+        id: event.id,
+      }
+
+    } catch (e) {
+      return e.response;
+    }
+  }
+
+  async changeUserStatusEvent(eventId: string, userId: string, status: string) {
+    try {
+      await this.eventsModel.findByIdAndUpdate(
+        {_id: eventId},
+        {
+          $pull: {
+            going: userId,
+            maybe: userId,
+            notGoing: userId,
+          }
+        }
+      )
+
+      if (status === 'going') {
+        await this.eventsModel.findByIdAndUpdate(
+          {_id: eventId},
+          {
+            $addToSet: {
+              going: userId,
+            }
+          }
+        )
+      } else if (status === 'maybe') {
+        await this.eventsModel.findByIdAndUpdate(
+          {_id: eventId},
+          {
+            $addToSet: {
+              maybe: userId,
+            }
+          }
+        )
+      } else {
+        await this.eventsModel.findByIdAndUpdate(
+          {_id: eventId},
+          {
+            $addToSet: {
+              notGoing: userId,
+            }
+          }
+        )
+      }
+
+      return null;
     } catch (e) {
       return e.response;
     }

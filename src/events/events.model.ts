@@ -26,6 +26,6 @@ export interface Event extends mongoose.Document {
 export interface EventData {
   title: string;
   location: string;
-  date: string;
+  date: number;
   description: string;
 }
