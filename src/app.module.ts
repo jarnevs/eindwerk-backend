@@ -11,6 +11,7 @@ import { GenresModule } from './genres/genres.module';
 import { ArtistsModule } from './artists/artists.module';
 import { PostsModule } from './posts/posts.module';
 import { EventsModule } from './events/events.module';
+import { CarpoolModule } from './carpool/carpool.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { EventsModule } from './events/events.module';
     ArtistsModule,
     PostsModule,
     EventsModule,
+    CarpoolModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),

@@ -12,6 +12,14 @@ export class PostsController {
     return await this.postsService.getPost(id);
   }
 
+  @Get('posts/user')
+  async getPostsUser(
+    @Request() req
+  ) {
+    const { user } = req;
+    return await this.postsService.getPostsUser(user.userId);
+  }
+
   @Get('comments/:id')
   async getCommentsPost(
       @Param('id') parentId: string

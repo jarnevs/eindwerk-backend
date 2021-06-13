@@ -12,6 +12,14 @@ export class EventsController {
     return this.eventsService.getEventsArtist(artistId);
   }
 
+  @Get('carpool')
+  async getEventsCarpool(
+    @Request() req
+  ) {
+    const { user } = req;
+    return this.eventsService.getEventsCarpool(user.userId);
+  }
+
   @Get(':id')
   async getEvent(
     @Param('id') id: string,

@@ -32,6 +32,15 @@ export class PostsService {
     }
   }
 
+  async getPostsUser(userId: string) {
+    try {
+      const posts = await this.postModel.find({ userId, parentId: null }).populate('artistId userId', 'id firstname lastname artistName').exec();
+      return this.mapPosts(posts);
+    } catch (e) {
+      return e.response;
+    }
+  }
+
   async getCommentsPost(parentId: string) {
     try {
       const posts = await this.postModel.find({ parentId }).populate('artistId userId', 'id firstname lastname artistName').exec();

@@ -37,6 +37,16 @@ export class EventsService {
     }
   }
 
+  async getEventsCarpool(userId: string) {
+    try {
+      const events = await this.eventsModel.find({ going: userId });
+
+      return events.map((event) => ({ id: event.id, title: event.title, date: event.date }))
+    } catch(e) {
+      return e.response;
+    }
+  };
+
   async createEvent(eventData: EventData, artistId: string) {
     try {
       const event = await this.eventsModel.create({
